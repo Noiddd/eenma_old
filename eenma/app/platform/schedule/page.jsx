@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Schedule() {
   return (
-    <div className="ml-[220px]">
+    <div className="px-[250px] pt-[85px]">
       <ScheduleCalender />
     </div>
   );

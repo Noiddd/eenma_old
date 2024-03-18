@@ -4,9 +4,9 @@ import React from "react";
 
 export default function layout({ children }) {
   return (
-    <div>
+    <div className="h-full">
       <Sidebar />
-      <NavBar />
+      {/* <NavBar /> */}
       {children}
     </div>
   );

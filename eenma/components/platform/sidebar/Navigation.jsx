@@ -1,25 +1,21 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
+
+import NavLink from "./NavLink";
+
+import { navigationIcons } from "@/constants/NavigationIcons";
 
 export default function Navigation() {
   return (
-    <div className="text-xs font-medium">
-      <div>
-        <Link
-          className="block py-2.5 px-3 hover:bg-primary/5"
-          href="/platform/schedule"
-        >
-          Schedule
-        </Link>
-        <Link
-          className="block py-2.5 px-3 hover:bg-primary/5"
-          href="/platform/analytics"
-        >
-          Analytics
-        </Link>
-      </div>
+    <div className="flex flex-col gap-5 text-xs font-medium">
+      {navigationIcons.map((navigationLink) => (
+        <NavLink
+          key={navigationLink.value}
+          href={navigationLink.href}
+          value={navigationLink.value}
+        />
+      ))}
     </div>
   );
 }

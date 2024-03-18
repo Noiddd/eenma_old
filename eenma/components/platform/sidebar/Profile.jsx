@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,8 +12,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import { ChevronsLeftRight } from "lucide-react";
 
 import React from "react";
 
@@ -55,21 +53,13 @@ export default function Profile() {
   const [sideBarCollapsed, setSideBarCollapsed] = useAtom(isSideBarCollapse);
 
   return (
-    <div>
+    <div className="mt-8">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div
-            role="button"
-            className="flex items-center text-sm p-2 hover:bg-primary/5 rounded mx-3 mt-2 cursor-default"
-          >
-            <div className="gap-x-2 flex items-center max-w-[160px]">
-              <Avatar className="h-5 w-5">
-                <AvatarImage src="/vercel.svg" />
-              </Avatar>
-              <span className="text-start font-medium line-clamp-1">Dion</span>
-              <ChevronsLeftRight className="rotate-90 text-muted-foreground h-3 w-3 cursor-default" />
-            </div>
-          </div>
+          <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className="w-60"
