@@ -1,18 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
-import { Fragment } from "react";
-
-import {
-  add,
-  eachDayOfInterval,
-  endOfMonth,
-  format,
-  getDay,
-  startOfMonth,
-  sub,
-} from "date-fns";
+import { format, add, sub } from "date-fns";
 
 import { ChevronLeftIcon, ChevronRightIcon, Clock } from "lucide-react";
 
@@ -96,22 +86,7 @@ const day = [
     date: "2022-01-22",
     isCurrentMonth: true,
     isSelected: true,
-    events: [
-      {
-        id: 4,
-        name: "Maple syrup museum",
-        time: "3PM",
-        datetime: "2022-01-22T15:00",
-        href: "#",
-      },
-      {
-        id: 5,
-        name: "Hockey game",
-        time: "7PM",
-        datetime: "2022-01-22T19:00",
-        href: "#",
-      },
-    ],
+    events: [],
   },
   { date: "2022-01-23", isCurrentMonth: true, events: [] },
   { date: "2022-01-24", isCurrentMonth: true, events: [] },
@@ -147,12 +122,22 @@ function classNames(...classes) {
 }
 
 export default function ScheduleCalender() {
-  const [currentMonth, setCurrentMonth] = useState(
-    format(new Date(), "MMMM yyyy")
-  );
+  const [initialMonth, setInitialMonth] = useState(new Date());
 
-  const days = useDays();
+  const handleNextMonth = () => {
+    setInitialMonth((prev) => add(prev, { months: 1 }));
+  };
+  const handlePrevMonth = () => {
+    setInitialMonth((prev) => sub(prev, { months: 1 }));
+  };
 
+  const handleToday = () => {
+    setInitialMonth(new Date());
+  };
+
+  const days = useCallback(useDays({ initialMonth }), [initialMonth]);
+
+  console.log("DAYSSS");
   console.log(days);
 
   const selectedDay = days.find((day) => day.isSelected);
@@ -160,35 +145,52 @@ export default function ScheduleCalender() {
   return (
     <div className="lg:flex lg:h-full lg:flex-col">
       <header className="flex items-center justify-between px-6 py-4 lg:flex-none">
-        <h1 className="text-lg font-semibold leading-6 text-gray-900 dark:text-white">
-          <time dateTime="2022-01">{currentMonth}</time>
+        <h1 className="w-40 text-lg font-semibold leading-6 text-gray-900 dark:text-white">
+          <time dateTime="2022-01">{format(initialMonth, "MMMM yyyy")}</time>
         </h1>
         <div className="flex gap-8 text-xs font-medium">
-          <div>Day</div>
+          <div className="cursor-default h-8 rounded-md text-xs px-3 hover:bg-secondary text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50">
+            Day
+          </div>
 
-          <div>Week</div>
+          <div className="cursor-default h-8 rounded-md text-xs px-3 hover:bg-secondary text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50">
+            Week
+          </div>
 
-          <div>Month</div>
+          <div className="cursor-default h-8 rounded-md text-xs px-3 bg-secondary text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50">
+            Month
+          </div>
 
-          <div>Year</div>
+          <div className="cursor-default h-8 rounded-md text-xs px-3 hover:bg-secondary text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50">
+            Year
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="secondary" className="gap-2 h-7 rounded-md px-2">
+          <Button
+            variant="secondary"
+            className="gap-2 h-7 rounded-md px-2"
+            onClick={handlePrevMonth}
+          >
             <ChevronLeftIcon className="h-3 w-3" aria-hidden="true" />
           </Button>
           <Button
             variant="secondary"
-            className="gap-2 h-7 rounded-md px-4 text-xs"
+            className="cursor-default gap-2 h-7 rounded-md px-4 text-xs bg-green hover:bg-greenhover dark:hover:bg-greenhover text-black"
+            onClick={handleToday}
           >
             Today
           </Button>
-          <Button variant="secondary" className="gap-2 h-7 rounded-md px-2">
+          <Button
+            variant="secondary"
+            className="gap-2 h-7 rounded-md px-2"
+            onClick={handleNextMonth}
+          >
             <ChevronRightIcon className="h-3 w-3" aria-hidden="true" />
           </Button>
         </div>
       </header>
-      <div className="rounded-lg shadow ring-1 ring-black dark:ring-white ring-opacity-5 lg:flex lg:flex-auto lg:flex-col">
+      <div className="rounded-lg shadow ring-2 ring-black dark:ring-slate-500 ring-opacity-5 lg:flex lg:flex-auto lg:flex-col">
         <div className="grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-center text-xs font-semibold leading-6 text-gray-700 dark:text-white lg:flex-none rounded-tr-lg rounded-tl-lg">
           <div className="bg-background py-2 rounded-tl-lg">
             S<span className="sr-only sm:not-sr-only">un</span>
@@ -212,7 +214,7 @@ export default function ScheduleCalender() {
             S<span className="sr-only sm:not-sr-only">at</span>
           </div>
         </div>
-        <div className="flex bg-gray-200 text-xs leading-6 text-gray-700 dark:text-white lg:flex-auto rounded-lg">
+        <div className="flex bg-gray-200 text-xs leading-6 text-gray-700 dark:text-white lg:flex-auto rounded-lg min-h-[700px]">
           <div className="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px rounded-lg">
             {days.map((day, i) => (
               <div
@@ -223,14 +225,14 @@ export default function ScheduleCalender() {
                     : "bg-gray-50 text-gray-500 dark:bg-gray-800 dark:text-gray-400",
                   i + 1 === days.length && "rounded-br-lg",
                   i + 1 === days.length - 6 && "rounded-bl-lg",
-                  "relative px-3 py-2 h-28 hover:rounded-br-3xl"
+                  "relative px-3 py-2 hover:rounded-br-3xl"
                 )}
               >
                 <time
                   dateTime={day.date}
                   className={
                     day.isToday
-                      ? "flex h-6 w-6 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white"
+                      ? "flex h-6 w-6 items-center justify-center rounded-full bg-green font-semibold text-black"
                       : undefined
                   }
                 >
@@ -241,12 +243,12 @@ export default function ScheduleCalender() {
                     {day.events.slice(0, 2).map((event) => (
                       <li key={event.id}>
                         <a href={event.href} className="group flex">
-                          <p className="flex-auto truncate font-medium text-gray-900 group-hover:text-indigo-600 dark:text-white">
+                          <p className="flex-auto truncate font-medium text-gray-900 group-hover:text-green dark:text-white">
                             {event.name}
                           </p>
                           <time
                             dateTime={event.datetime}
-                            className="ml-3 hidden flex-none text-gray-500 group-hover:text-indigo-600 xl:block dark:text-white"
+                            className="ml-3 hidden flex-none text-gray-500 group-hover:text-green xl:block dark:text-white"
                           >
                             {event.time}
                           </time>
@@ -272,7 +274,7 @@ export default function ScheduleCalender() {
                   day.isCurrentMonth ? "bg-background" : "bg-gray-50",
                   (day.isSelected || day.isToday) && "font-semibold",
                   day.isSelected && "text-white",
-                  !day.isSelected && day.isToday && "text-indigo-600",
+                  !day.isSelected && day.isToday && "text-green",
                   !day.isSelected &&
                     day.isCurrentMonth &&
                     !day.isToday &&
@@ -289,7 +291,7 @@ export default function ScheduleCalender() {
                   className={classNames(
                     day.isSelected &&
                       "flex h-6 w-6 items-center justify-center rounded-full",
-                    day.isSelected && day.isToday && "bg-indigo-600",
+                    day.isSelected && day.isToday && "bg-green",
                     day.isSelected && !day.isToday && "bg-gray-900",
                     "ml-auto"
                   )}

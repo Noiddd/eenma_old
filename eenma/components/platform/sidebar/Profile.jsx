@@ -62,7 +62,7 @@ export default function Profile() {
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-60"
+          className="w-48"
           align="start"
           alignOffset={11}
           forceMount

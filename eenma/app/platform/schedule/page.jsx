@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Schedule() {
   return (
-    <div className="px-[250px] pt-[85px]">
+    <div className="px-[200px] py-[13px]">
       <ScheduleCalender />
     </div>
   );

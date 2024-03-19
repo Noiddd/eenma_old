@@ -1,4 +1,4 @@
-import { Calendar, LayoutDashboard, SquarePlus } from "lucide-react";
+import { Calendar, LayoutDashboard, SquarePlus, Mail } from "lucide-react";
 
 export const navigationIcons = [
   {
@@ -15,5 +15,10 @@ export const navigationIcons = [
     value: "Post",
     href: "post",
     icon: SquarePlus,
+  },
+  {
+    value: "Inbox",
+    href: "inbox",
+    icon: Mail,
   },
 ];
