@@ -214,7 +214,7 @@ export default function ScheduleCalender() {
             S<span className="sr-only sm:not-sr-only">at</span>
           </div>
         </div>
-        <div className="flex bg-gray-200 text-xs leading-6 text-gray-700 dark:text-white lg:flex-auto rounded-lg min-h-[700px]">
+        <div className="flex bg-gray-200 text-xs leading-5 text-gray-700 dark:text-white lg:flex-auto rounded-lg">
           <div className="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px rounded-lg">
             {days.map((day, i) => (
               <div
@@ -225,7 +225,7 @@ export default function ScheduleCalender() {
                     : "bg-gray-50 text-gray-500 dark:bg-gray-800 dark:text-gray-400",
                   i + 1 === days.length && "rounded-br-lg",
                   i + 1 === days.length - 6 && "rounded-bl-lg",
-                  "relative px-3 py-2 hover:rounded-br-3xl"
+                  "relative px-3 py-2 hover:rounded-br-3xl min-h-24"
                 )}
               >
                 <time
@@ -239,9 +239,9 @@ export default function ScheduleCalender() {
                   {day.date.split("-").pop().replace(/^0/, "")}
                 </time>
                 {day.events.length > 0 && (
-                  <ol className="mt-2">
+                  <ol className="mt-1">
                     {day.events.slice(0, 2).map((event) => (
-                      <li key={event.id}>
+                      <li key={event.id} className="">
                         <a href={event.href} className="group flex">
                           <p className="flex-auto truncate font-medium text-gray-900 group-hover:text-green dark:text-white">
                             {event.name}
