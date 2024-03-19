@@ -1,4 +1,4 @@
-import ScheduleCalender from "@/components/platform/schedule/ScheduleCalender";
+import ScheduleCalender from "@/components/schedule/ScheduleCalender";
 import React from "react";
 
 export default function Schedule() {

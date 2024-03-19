@@ -8,7 +8,7 @@ import { Calendar, LayoutDashboard, SquarePlus, Mail } from "lucide-react";
 
 export default function NavLink({ href, value, ...props }) {
   const pathname = usePathname();
-  const isActive = "/platform/" + href === pathname;
+  const isActive = "/" + href === pathname;
 
   return (
     <div className={`flex relative items-center group`}>
