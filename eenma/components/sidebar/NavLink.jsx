@@ -4,7 +4,13 @@ import React from "react";
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Calendar, LayoutDashboard, SquarePlus, Mail } from "lucide-react";
+import {
+  Calendar,
+  LayoutDashboard,
+  SquarePlus,
+  Mail,
+  Image,
+} from "lucide-react";
 
 export default function NavLink({ href, value, ...props }) {
   const pathname = usePathname();
@@ -33,6 +39,15 @@ export default function NavLink({ href, value, ...props }) {
 
         {value == "Post" && (
           <SquarePlus
+            strokeWidth={2.5}
+            className={`h-4 w-4  hover:text-black dark:hover:text-white cursor-default ${
+              isActive ? "dark:text-white text-black" : "text-muted-foreground"
+            }`}
+          />
+        )}
+
+        {value == "Media" && (
+          <Image
             strokeWidth={2.5}
             className={`h-4 w-4  hover:text-black dark:hover:text-white cursor-default ${
               isActive ? "dark:text-white text-black" : "text-muted-foreground"

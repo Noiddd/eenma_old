@@ -15,7 +15,8 @@ import {
 
 import React from "react";
 
-//import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import SupabaseBrowser from "@/lib/SupabaseBrowser";
+
 import { useRouter } from "next/navigation";
 
 import { useTheme } from "next-themes";
@@ -23,7 +24,7 @@ import { useAtom } from "jotai";
 import { isSideBarCollapse } from "@/jotai/sidebar_jotai";
 
 export default function Profile() {
-  // const supabase = createClientComponentClient();
+  const supabase = SupabaseBrowser();
   const router = useRouter();
 
   const { setTheme } = useTheme();
