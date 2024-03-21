@@ -1,22 +1,22 @@
 export const navigationIcons = [
   {
     value: "Analytics",
-    href: "analytics",
+    href: "/analytics",
   },
   {
     value: "Schedule",
-    href: "schedule",
+    href: "/schedule/month",
   },
   {
     value: "Post",
-    href: "post",
+    href: "/post",
   },
   {
     value: "Media",
-    href: "media",
+    href: "/media",
   },
   {
     value: "Inbox",
-    href: "inbox",
+    href: "/inbox",
   },
 ];

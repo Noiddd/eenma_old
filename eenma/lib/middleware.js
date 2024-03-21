@@ -61,13 +61,18 @@ export async function updateSession(request) {
   // if user is signed in and the current path is / redirect the user to /analytics
   if (
     (user && request.nextUrl.pathname === "/") ||
-    (user && request.nextUrl.pathname === "/signin")
+    (user && request.nextUrl.pathname === "/signin") ||
+    (user && request.nextUrl.pathname === "/signup")
   ) {
     return NextResponse.redirect(new URL("/analytics", request.url));
   }
 
   // if user is not signed in and the current path is not / redirect the user to /
-  if (!user && request.nextUrl.pathname !== "/") {
+  if (
+    (!user && request.nextUrl.pathname !== "/") ||
+    (!user && request.nextUrl.pathname !== "/signin") ||
+    (!user && request.nextUrl.pathname !== "/signup")
+  ) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

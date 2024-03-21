@@ -8,6 +8,7 @@ import { ChevronLeftIcon, ChevronRightIcon, Clock } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import useDays from "@/hooks/useDays";
+import Link from "next/link";
 
 //import { Menu, Transition } from "@headlessui/react";
 
@@ -121,7 +122,8 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ScheduleCalender() {
+export default function ScheduleCalender({ view }) {
+  console.log(view);
   const [initialMonth, setInitialMonth] = useState(new Date());
 
   const handleNextMonth = () => {
@@ -143,27 +145,29 @@ export default function ScheduleCalender() {
   const selectedDay = days.find((day) => day.isSelected);
 
   return (
-    <div className="lg:flex lg:h-full lg:flex-col">
+    <div className="lg:flex lg:flex-col relative top-[50%] translate-y-[-52%]">
       <header className="flex items-center justify-between px-6 py-4 lg:flex-none">
         <h1 className="w-40 text-lg font-semibold leading-6 text-gray-900 dark:text-white">
           <time dateTime="2022-01">{format(initialMonth, "MMMM yyyy")}</time>
         </h1>
         <div className="flex gap-8 text-xs font-medium">
-          <div className="cursor-default h-8 rounded-md text-xs px-3 hover:bg-secondary text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50">
-            Day
-          </div>
-
-          <div className="cursor-default h-8 rounded-md text-xs px-3 hover:bg-secondary text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50">
+          <Link
+            href={"/schedule/week"}
+            className={`${
+              view == "week" && "bg-secondary"
+            } cursor-default h-8 rounded-md text-xs px-3 hover:bg-secondary text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50`}
+          >
             Week
-          </div>
+          </Link>
 
-          <div className="cursor-default h-8 rounded-md text-xs px-3 bg-secondary text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50">
+          <Link
+            href={"/schedule/month"}
+            className={`${
+              view == "month" && "bg-secondary"
+            } cursor-default h-8 rounded-md text-xs px-3 hover:bg-secondary text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50`}
+          >
             Month
-          </div>
-
-          <div className="cursor-default h-8 rounded-md text-xs px-3 hover:bg-secondary text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50">
-            Year
-          </div>
+          </Link>
         </div>
 
         <div className="flex items-center gap-2">

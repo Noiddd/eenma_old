@@ -13,12 +13,20 @@ import {
 } from "lucide-react";
 
 export default function NavLink({ href, value, ...props }) {
-  const pathname = usePathname();
-  const isActive = "/" + href === pathname;
+  let pathname = usePathname();
+
+  if (pathname == "/schedule/month" || pathname == "/schedule/week") {
+    console.log("IN");
+    pathname = "/schedule/month";
+  }
+
+  console.log(href);
+  console.log(pathname);
+  const isActive = href === pathname;
 
   return (
-    <div className={`flex relative items-center group`}>
-      <Link href={href}>
+    <div className={`flex relative items-center group cursor-default`}>
+      <Link href={href} className={`group/${value}`}>
         {value == "Analytics" && (
           <LayoutDashboard
             strokeWidth={2.5}
@@ -64,7 +72,9 @@ export default function NavLink({ href, value, ...props }) {
           />
         )}
       </Link>
-      <div className="transition delay-500 duration-200 ease-in-out group-hover:opacity-100 dark:group-hover:opacity-100 opacity-0 absolute left-7 z-50 rounded-md border bg-popover px-3 py-2 text-popover-foreground shadow-md outline-none">
+      <div
+        className={`transition delay-500 duration-200 ease-in-out group-hover:opacity-100 dark:group-hover:opacity-100 opacity-0 absolute left-7 z-50 rounded-md border bg-popover px-3 py-2 text-popover-foreground shadow-md outline-none`}
+      >
         {value}
       </div>
     </div>

@@ -5,16 +5,20 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/", "/analytics", "/schedule", "/inbox", "/post", "/media"],
-
-  //   matcher: [
-  //     /*
-  //      * Match all request paths except for the ones starting with:
-  //      * - _next/static (static files)
-  //      * - _next/image (image optimization files)
-  //      * - favicon.ico (favicon file)
-  //      * Feel free to modify this pattern to include more paths.
-  //      */
-  //     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  //   ],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    "/",
+    "/analytics",
+    "/schedule",
+    "/inbox",
+    "/post",
+    "/media",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };
