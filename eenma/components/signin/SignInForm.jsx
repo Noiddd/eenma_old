@@ -9,7 +9,7 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 
 import { useRouter } from "next/navigation";
-import SupabaseBrowser from "@/lib/SupabaseBrowser";
+import SupabaseBrowser from "@/lib/supabase/SupabaseBrowser";
 
 export default function SignInForm({ className, ...props }) {
   const router = useRouter();

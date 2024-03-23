@@ -4,29 +4,20 @@ import React from "react";
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import {
-  Calendar,
-  LayoutDashboard,
-  SquarePlus,
-  Mail,
-  Image,
-} from "lucide-react";
+import { Calendar, LayoutDashboard, Mail, Image } from "lucide-react";
 
 export default function NavLink({ href, value, ...props }) {
   let pathname = usePathname();
 
   if (pathname == "/schedule/month" || pathname == "/schedule/week") {
-    console.log("IN");
     pathname = "/schedule/month";
   }
 
-  console.log(href);
-  console.log(pathname);
   const isActive = href === pathname;
 
   return (
-    <div className={`flex relative items-center group cursor-default`}>
-      <Link href={href} className={`group/${value}`}>
+    <div className={`flex relative items-center cursor-default`}>
+      <Link href={href} className="peer">
         {value == "Analytics" && (
           <LayoutDashboard
             strokeWidth={2.5}
@@ -38,15 +29,6 @@ export default function NavLink({ href, value, ...props }) {
 
         {value == "Schedule" && (
           <Calendar
-            strokeWidth={2.5}
-            className={`h-4 w-4  hover:text-black dark:hover:text-white cursor-default ${
-              isActive ? "dark:text-white text-black" : "text-muted-foreground"
-            }`}
-          />
-        )}
-
-        {value == "Post" && (
-          <SquarePlus
             strokeWidth={2.5}
             className={`h-4 w-4  hover:text-black dark:hover:text-white cursor-default ${
               isActive ? "dark:text-white text-black" : "text-muted-foreground"
@@ -73,7 +55,7 @@ export default function NavLink({ href, value, ...props }) {
         )}
       </Link>
       <div
-        className={`transition delay-500 duration-200 ease-in-out group-hover:opacity-100 dark:group-hover:opacity-100 opacity-0 absolute left-7 z-50 rounded-md border bg-popover px-3 py-2 text-popover-foreground shadow-md outline-none`}
+        className={`transition delay-500 duration-200 ease-in-out peer-hover:opacity-100 dark:peer-hover:opacity-100 opacity-0 absolute left-7 z-50 rounded-md border bg-popover px-3 py-2 text-popover-foreground shadow-md outline-none`}
       >
         {value}
       </div>

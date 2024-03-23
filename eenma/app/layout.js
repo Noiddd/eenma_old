@@ -1,8 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-import { ThemeProvider } from "@/providers/ThemeProvider";
+import { ThemeProvider } from "@/lib/providers/ThemeProvider";
 import Sidebar from "@/components/sidebar/SideBar";
+import ReactQueryProvider from "@/lib/providers/ReactQueryProvider";
+import useUser from "@/hooks/useUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,15 +17,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Sidebar />
-          {children}
-        </ThemeProvider>
+        <ReactQueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Sidebar />
+            {children}
+          </ThemeProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

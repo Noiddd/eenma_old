@@ -58,22 +58,23 @@ export async function updateSession(request) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // if user is signed in and the current path is / redirect the user to /analytics
+  const protectedRoutes = ["/analytics", "/inbox", "/schedule"];
+
+  // if user is not signed in and the current path is not / or /signin or /signup redirect the user to /
+  if (!user && protectedRoutes.includes(request.nextUrl.pathname)) {
+    console.log("in");
+    console.log(request.nextUrl.pathname);
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  // if user is signed in and the current path is / or /signin or /signup redirect the user to /analytics
   if (
     (user && request.nextUrl.pathname === "/") ||
     (user && request.nextUrl.pathname === "/signin") ||
     (user && request.nextUrl.pathname === "/signup")
   ) {
+    console.log("out");
     return NextResponse.redirect(new URL("/analytics", request.url));
-  }
-
-  // if user is not signed in and the current path is not / redirect the user to /
-  if (
-    (!user && request.nextUrl.pathname !== "/") ||
-    (!user && request.nextUrl.pathname !== "/signin") ||
-    (!user && request.nextUrl.pathname !== "/signup")
-  ) {
-    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return response;

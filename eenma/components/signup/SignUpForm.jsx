@@ -8,7 +8,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 
-import SupabaseBrowser from "@/lib/SupabaseBrowser";
+import SupabaseBrowser from "@/lib/supabase/SupabaseBrowser";
 
 import { useRouter } from "next/navigation";
 

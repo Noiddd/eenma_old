@@ -13,15 +13,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import React from "react";
+import React, { useEffect } from "react";
 
-import SupabaseBrowser from "@/lib/SupabaseBrowser";
+import SupabaseBrowser from "@/lib/supabase/SupabaseBrowser";
 
 import { useRouter } from "next/navigation";
 
 import { useTheme } from "next-themes";
-import { useAtom } from "jotai";
-import { isSideBarCollapse } from "@/jotai/sidebar_jotai";
+import useUser from "@/hooks/useUser";
 
 export default function Profile() {
   const supabase = SupabaseBrowser();
@@ -48,19 +47,23 @@ export default function Profile() {
     router.push("/settings");
   };
 
-  // get user date from supabase auth or save in jotai at first come in
-  const user = "Dion";
+  const { isFetching, data: userData } = useUser();
 
-  const [sideBarCollapsed, setSideBarCollapsed] = useAtom(isSideBarCollapse);
+  console.log("user info");
+  console.log(userData);
 
   return (
     <div className="mt-8">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          {isFetching ? (
+            <div>test</div>
+          ) : (
+            <Avatar>
+              <AvatarImage src={userData[0]?.image_url} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+          )}
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className="w-48"
@@ -68,21 +71,28 @@ export default function Profile() {
           alignOffset={11}
           forceMount
         >
-          <div className="flex flex-col space-y-4 p-2">
-            <p className="text-xs font-medium leading-none text-muted-foreground">
-              dionang11@gmail.com
-            </p>
-            <div className="flex items-center gap-x-2">
-              <div className="rounded-md bg-secondary p-1">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src="/vercel.svg" />
-                </Avatar>
-              </div>
-              <div className="space-y-1">
-                <p className="text-sm line-clamp-1">Dion Ang</p>
+          {isFetching ? (
+            <div>test</div>
+          ) : (
+            <div className="flex flex-col space-y-4 p-2">
+              <p className="text-xs font-medium leading-none text-muted-foreground">
+                {userData[0]?.email}
+              </p>
+              <div className="flex items-center gap-x-2">
+                <div className="rounded-md bg-secondary p-1">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={userData[0]?.image_url} />
+                  </Avatar>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm line-clamp-1">
+                    {userData[0]?.display_name}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="w-full text-muted-foreground text-xs cursor-default"

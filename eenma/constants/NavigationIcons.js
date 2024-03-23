@@ -8,10 +8,6 @@ export const navigationIcons = [
     href: "/schedule/month",
   },
   {
-    value: "Post",
-    href: "/post",
-  },
-  {
     value: "Media",
     href: "/media",
   },

@@ -78,20 +78,6 @@ export default function useDays({ initialMonth }) {
                 datetime: "2022-01-03T10:00",
                 href: "#",
               },
-              {
-                id: 2,
-                name: "Design review",
-                time: "10AM",
-                datetime: "2022-01-03T10:00",
-                href: "#",
-              },
-              {
-                id: 3,
-                name: "Design review",
-                time: "10AM",
-                datetime: "2022-01-03T10:00",
-                href: "#",
-              },
             ]
           : [],
     });
