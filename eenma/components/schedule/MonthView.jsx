@@ -1,4 +1,15 @@
+"use client";
+
 import React from "react";
+
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -33,52 +44,64 @@ export default function MonthView({ days }) {
       <div className="flex bg-gray-200 text-xs leading-5 text-gray-700 dark:text-white lg:flex-auto rounded-lg">
         <div className="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px rounded-lg border-slate-400">
           {days.map((day, i) => (
-            <div
-              key={day.date}
-              className={classNames(
-                day.isCurrentMonth
-                  ? "bg-background"
-                  : "bg-gray-50 text-gray-500 dark:bg-gray-800 dark:text-gray-400",
-                i + 1 === days.length && "rounded-br-lg",
-                i + 1 === days.length - 6 && "rounded-bl-lg",
-                "relative px-3 py-2 hover:rounded-br-3xl"
-              )}
-            >
-              <time
-                dateTime={day.date}
-                className={
-                  day.isToday
-                    ? "flex h-6 w-6 items-center justify-center rounded-full bg-green font-semibold text-black"
-                    : undefined
-                }
-              >
-                {day.date.split("-").pop().replace(/^0/, "")}
-              </time>
-              {day.events.length > 0 && (
-                <ol className="mt-1">
-                  {day.events.slice(0, 2).map((event) => (
-                    <li key={event.id} className="">
-                      <a href={event.href} className="group flex">
-                        <p className="flex-auto truncate font-medium text-gray-900 group-hover:text-green dark:text-white">
-                          {event.name}
-                        </p>
-                        <time
-                          dateTime={event.datetime}
-                          className="ml-3 hidden flex-none text-gray-500 group-hover:text-green xl:block dark:text-white"
-                        >
-                          {event.time}
-                        </time>
-                      </a>
-                    </li>
-                  ))}
-                  {day.events.length > 2 && (
-                    <li className="text-gray-500">
-                      + {day.events.length - 2} more
-                    </li>
+            <Sheet>
+              <SheetTrigger asChild>
+                <div
+                  key={day.date}
+                  className={classNames(
+                    day.isCurrentMonth
+                      ? "bg-background"
+                      : "bg-gray-50 text-gray-500 dark:bg-gray-800 dark:text-gray-400",
+                    i + 1 === days.length && "rounded-br-lg",
+                    i + 1 === days.length - 6 && "rounded-bl-lg",
+                    "relative px-3 py-2 hover:rounded-br-3xl"
                   )}
-                </ol>
-              )}
-            </div>
+                >
+                  <time
+                    dateTime={day.date}
+                    className={
+                      day.isToday
+                        ? "flex h-6 w-6 items-center justify-center rounded-full bg-green font-semibold text-black"
+                        : undefined
+                    }
+                  >
+                    {day.date.split("-").pop().replace(/^0/, "")}
+                  </time>
+                  {day.events.length > 0 && (
+                    <ol className="mt-1">
+                      {day.events.slice(0, 2).map((event) => (
+                        <li key={event.id} className="">
+                          <a href={event.href} className="group flex">
+                            <p className="flex-auto truncate font-medium text-gray-900 group-hover:text-green dark:text-white">
+                              {event.name}
+                            </p>
+                            <time
+                              dateTime={event.datetime}
+                              className="ml-3 hidden flex-none text-gray-500 group-hover:text-green xl:block dark:text-white"
+                            >
+                              {event.time}
+                            </time>
+                          </a>
+                        </li>
+                      ))}
+                      {day.events.length > 2 && (
+                        <li className="text-gray-500">
+                          + {day.events.length - 2} more
+                        </li>
+                      )}
+                    </ol>
+                  )}
+                </div>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Schedule Post</SheetTitle>
+                  <SheetDescription>
+                    Schedule a post on {day.date}
+                  </SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
           ))}
         </div>
         <div className="isolate grid w-full grid-cols-7 grid-rows-6 gap-px lg:hidden">

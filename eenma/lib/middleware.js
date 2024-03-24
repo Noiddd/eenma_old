@@ -58,7 +58,13 @@ export async function updateSession(request) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const protectedRoutes = ["/analytics", "/inbox", "/schedule"];
+  const protectedRoutes = [
+    "/analytics",
+    "/inbox",
+    "/schedule",
+    "/schedule/month",
+    "/schedule/week",
+  ];
 
   // if user is not signed in and the current path is not / or /signin or /signup redirect the user to /
   if (!user && protectedRoutes.includes(request.nextUrl.pathname)) {

@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import React, { useEffect } from "react";
+import React from "react";
 
 import SupabaseBrowser from "@/lib/supabase/SupabaseBrowser";
 
@@ -21,12 +21,16 @@ import { useRouter } from "next/navigation";
 
 import { useTheme } from "next-themes";
 import useUser from "@/hooks/useUser";
+import { Skeleton } from "../ui/skeleton";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Profile() {
   const supabase = SupabaseBrowser();
   const router = useRouter();
 
   const { setTheme } = useTheme();
+
+  const queryClient = useQueryClient();
 
   // log out function
   const handleLogOut = async (e) => {
@@ -40,6 +44,8 @@ export default function Profile() {
       return;
     }
 
+    queryClient.clear();
+
     router.push("/");
   };
 
@@ -49,18 +55,18 @@ export default function Profile() {
 
   const { isFetching, data: userData } = useUser();
 
-  console.log("user info");
-  console.log(userData);
-
   return (
     <div className="mt-8">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           {isFetching ? (
-            <div>test</div>
+            <Skeleton className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full" />
           ) : (
             <Avatar>
-              <AvatarImage src={userData[0]?.image_url} />
+              <AvatarImage
+                src={userData[0]?.image_url}
+                alt={userData[0]?.display_name}
+              />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           )}
@@ -72,7 +78,7 @@ export default function Profile() {
           forceMount
         >
           {isFetching ? (
-            <div>test</div>
+            <Skeleton className="flex flex-col space-y-4 p-2" />
           ) : (
             <div className="flex flex-col space-y-4 p-2">
               <p className="text-xs font-medium leading-none text-muted-foreground">
@@ -81,7 +87,10 @@ export default function Profile() {
               <div className="flex items-center gap-x-2">
                 <div className="rounded-md bg-secondary p-1">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={userData[0]?.image_url} />
+                    <AvatarImage
+                      src={userData[0]?.image_url}
+                      alt={userData[0]?.display_name}
+                    />
                   </Avatar>
                 </div>
                 <div className="space-y-1">
