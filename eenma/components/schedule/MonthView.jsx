@@ -10,6 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import DayView from "./DayView";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -100,6 +101,7 @@ export default function MonthView({ days }) {
                     Schedule a post on {day.date}
                   </SheetDescription>
                 </SheetHeader>
+                <DayView />
               </SheetContent>
             </Sheet>
           ))}
