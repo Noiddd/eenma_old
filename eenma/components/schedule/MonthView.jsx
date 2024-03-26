@@ -45,10 +45,9 @@ export default function MonthView({ days }) {
       <div className="flex bg-gray-200 text-xs leading-5 text-gray-700 dark:text-white lg:flex-auto rounded-lg">
         <div className="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px rounded-lg border-slate-400">
           {days.map((day, i) => (
-            <Sheet>
+            <Sheet key={day.date}>
               <SheetTrigger asChild>
                 <div
-                  key={day.date}
                   className={classNames(
                     day.isCurrentMonth
                       ? "bg-background"
