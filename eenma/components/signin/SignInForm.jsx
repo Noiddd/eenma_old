@@ -20,6 +20,7 @@ export default function SignInForm({ className, ...props }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const onSignIn = async (provider) => {
+    console.log(location.origin);
     //event.preventDefault();
     setIsLoading(true);
 

@@ -6,12 +6,14 @@ import {
   getDay,
   isSameMonth,
   isThisMonth,
+  setDay,
   startOfMonth,
   sub,
 } from "date-fns";
 
-export default function useDays({ initialMonth }) {
-  let returnDays = [];
+export default function useDaysWeek({ initialMonth }) {
+  let daysWeekObj = [];
+  let returnDaysWeek = [];
   let connectDaysFromPrevMonth = [];
   let connectDaysFromNextMonth = [];
 
@@ -71,7 +73,7 @@ export default function useDays({ initialMonth }) {
     .concat(connectDaysFromNextMonth);
 
   for (let day of days) {
-    returnDays.push({
+    daysWeekObj.push({
       date: format(day, "yyyy-MM-dd"),
       isCurrentMonth: isSameMonth(day, currentDate),
       isSelected: false,
@@ -91,8 +93,9 @@ export default function useDays({ initialMonth }) {
     });
   }
 
-  console.log("RETURN DAYS");
-  console.log(returnDays);
+  while (daysWeekObj.length > 0) {
+    returnDaysWeek.push(daysWeekObj.splice(0, 7));
+  }
 
-  return returnDays;
+  return returnDaysWeek;
 }

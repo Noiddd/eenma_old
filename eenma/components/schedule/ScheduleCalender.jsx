@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { format, add, sub } from "date-fns";
 
@@ -9,133 +9,71 @@ import { ChevronLeftIcon, ChevronRightIcon, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useDays from "@/hooks/useDays";
 import Link from "next/link";
-import MonthView from "./MonthView";
-import WeekView from "./WeekView";
+import MonthView from "./month/MonthView";
+import WeekView from "./week/WeekView";
 import { usePathname } from "next/navigation";
-
-const day = [
-  { date: "2021-12-27", isCurrentMonth: false, events: [] },
-  { date: "2021-12-28", isCurrentMonth: false, events: [] },
-  { date: "2021-12-29", isCurrentMonth: false, events: [] },
-  { date: "2021-12-30", isCurrentMonth: false, events: [] },
-  { date: "2021-12-31", isCurrentMonth: false, events: [] },
-  { date: "2022-01-01", isCurrentMonth: true, events: [] },
-  { date: "2022-01-02", isCurrentMonth: true, events: [] },
-  {
-    date: "2022-01-03",
-    isCurrentMonth: true,
-    events: [
-      {
-        id: 1,
-        name: "Design review",
-        time: "10AM",
-        datetime: "2022-01-03T10:00",
-        href: "#",
-      },
-      {
-        id: 2,
-        name: "Sales meeting",
-        time: "2PM",
-        datetime: "2022-01-03T14:00",
-        href: "#",
-      },
-    ],
-  },
-  { date: "2022-01-04", isCurrentMonth: true, events: [] },
-  { date: "2022-01-05", isCurrentMonth: true, events: [] },
-  { date: "2022-01-06", isCurrentMonth: true, events: [] },
-  {
-    date: "2022-01-07",
-    isCurrentMonth: true,
-    events: [
-      {
-        id: 3,
-        name: "Date night",
-        time: "6PM",
-        datetime: "2022-01-08T18:00",
-        href: "#",
-      },
-    ],
-  },
-  { date: "2022-01-08", isCurrentMonth: true, events: [] },
-  { date: "2022-01-09", isCurrentMonth: true, events: [] },
-  { date: "2022-01-10", isCurrentMonth: true, events: [] },
-  { date: "2022-01-11", isCurrentMonth: true, events: [] },
-  {
-    date: "2022-01-12",
-    isCurrentMonth: true,
-    isToday: true,
-    events: [
-      {
-        id: 6,
-        name: "Sam's birthday party",
-        time: "2PM",
-        datetime: "2022-01-25T14:00",
-        href: "#",
-      },
-    ],
-  },
-  { date: "2022-01-13", isCurrentMonth: true, events: [] },
-  { date: "2022-01-14", isCurrentMonth: true, events: [] },
-  { date: "2022-01-15", isCurrentMonth: true, events: [] },
-  { date: "2022-01-16", isCurrentMonth: true, events: [] },
-  { date: "2022-01-17", isCurrentMonth: true, events: [] },
-  { date: "2022-01-18", isCurrentMonth: true, events: [] },
-  { date: "2022-01-19", isCurrentMonth: true, events: [] },
-  { date: "2022-01-20", isCurrentMonth: true, events: [] },
-  { date: "2022-01-21", isCurrentMonth: true, events: [] },
-  {
-    date: "2022-01-22",
-    isCurrentMonth: true,
-    isSelected: true,
-    events: [],
-  },
-  { date: "2022-01-23", isCurrentMonth: true, events: [] },
-  { date: "2022-01-24", isCurrentMonth: true, events: [] },
-  { date: "2022-01-25", isCurrentMonth: true, events: [] },
-  { date: "2022-01-26", isCurrentMonth: true, events: [] },
-  { date: "2022-01-27", isCurrentMonth: true, events: [] },
-  { date: "2022-01-28", isCurrentMonth: true, events: [] },
-  { date: "2022-01-29", isCurrentMonth: true, events: [] },
-  { date: "2022-01-30", isCurrentMonth: true, events: [] },
-  { date: "2022-01-31", isCurrentMonth: true, events: [] },
-  { date: "2022-02-01", isCurrentMonth: false, events: [] },
-  { date: "2022-02-02", isCurrentMonth: false, events: [] },
-  { date: "2022-02-03", isCurrentMonth: false, events: [] },
-  {
-    date: "2022-02-04",
-    isCurrentMonth: false,
-    events: [
-      {
-        id: 7,
-        name: "Cinema with friends",
-        time: "9PM",
-        datetime: "2022-02-04T21:00",
-        href: "#",
-      },
-    ],
-  },
-  { date: "2022-02-05", isCurrentMonth: false, events: [] },
-  { date: "2022-02-06", isCurrentMonth: false, events: [] },
-];
+import useDaysWeek from "@/hooks/useDaysWeek";
 
 export default function ScheduleCalender({ view }) {
-  let pathname = usePathname();
-
   const [initialMonth, setInitialMonth] = useState(new Date());
 
-  const handleNextMonth = () => {
-    setInitialMonth((prev) => add(prev, { months: 1 }));
+  const days = useMemo(() => useDays({ initialMonth }), [initialMonth]);
+  const daysWeek = useMemo(() => useDaysWeek({ initialMonth }), [initialMonth]);
+
+  useEffect(() => {
+    setInitialWeek(daysWeek[0]);
+  }, [initialMonth]);
+
+  const [initialWeek, setInitialWeek] = useState(daysWeek[0]);
+  const [weekNumber, setWeekNumber] = useState(0);
+
+  let pathname = usePathname();
+
+  const handleNext = () => {
+    if (view == "month") {
+      setInitialMonth((prev) => add(prev, { months: 1 }));
+    }
+
+    if (view == "week") {
+      if (weekNumber == daysWeek.length - 1) {
+        console.log("next month");
+        setInitialMonth((prev) => add(prev, { months: 1 }));
+
+        // setInitialWeek(daysWeek[0]);
+
+        setWeekNumber(0);
+        return;
+      }
+
+      setWeekNumber((prev) => prev + 1);
+
+      setInitialWeek(daysWeek[weekNumber + 1]);
+    }
   };
-  const handlePrevMonth = () => {
-    setInitialMonth((prev) => sub(prev, { months: 1 }));
+  const handlePrev = () => {
+    if (view == "month") {
+      setInitialMonth((prev) => sub(prev, { months: 1 }));
+    }
+
+    if (view == "week") {
+      if (weekNumber == 0) {
+        console.log("previous month");
+        setInitialMonth((prev) => sub(prev, { months: 1 }));
+
+        setInitialWeek(daysWeek[daysWeek.length - 1]);
+
+        return;
+      }
+
+      setWeekNumber((prev) => prev - 1);
+
+      setInitialWeek(daysWeek[weekNumber]);
+    }
   };
 
   const handleToday = () => {
     setInitialMonth(new Date());
   };
-
-  const days = useCallback(useDays({ initialMonth }), [initialMonth]);
 
   const selectedDay = days.find((day) => day.isSelected);
 
@@ -169,7 +107,7 @@ export default function ScheduleCalender({ view }) {
           <Button
             variant="secondary"
             className="gap-2 h-7 rounded-md px-2"
-            onClick={handlePrevMonth}
+            onClick={handlePrev}
           >
             <ChevronLeftIcon className="h-3 w-3" aria-hidden="true" />
           </Button>
@@ -183,14 +121,14 @@ export default function ScheduleCalender({ view }) {
           <Button
             variant="secondary"
             className="gap-2 h-7 rounded-md px-2"
-            onClick={handleNextMonth}
+            onClick={handleNext}
           >
             <ChevronRightIcon className="h-3 w-3" aria-hidden="true" />
           </Button>
         </div>
       </header>
       {pathname == "/schedule/month" && <MonthView days={days} />}
-      {pathname == "/schedule/week" && <WeekView />}
+      {pathname == "/schedule/week" && <WeekView days={initialWeek} />}
 
       {selectedDay?.events.length > 0 && (
         <div className="px-4 py-10 sm:px-6 lg:hidden ">

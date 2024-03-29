@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/lib/providers/ThemeProvider";
 import Sidebar from "@/components/sidebar/SideBar";
 import ReactQueryProvider from "@/lib/providers/ReactQueryProvider";
-import useUser from "@/hooks/useUser";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,20 +15,24 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ReactQueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Sidebar />
-            {children}
-          </ThemeProvider>
-        </ReactQueryProvider>
-      </body>
-    </html>
+    <>
+      <html lang="en">
+        <body className={inter.className}>
+          <ReactQueryProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Sidebar />
+              {children}
+            </ThemeProvider>
+          </ReactQueryProvider>
+        </body>
+      </html>
+
+      <Script src="https://connect.facebook.net/en_US/sdk.js" />
+    </>
   );
 }

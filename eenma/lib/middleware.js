@@ -64,6 +64,7 @@ export async function updateSession(request) {
     "/schedule",
     "/schedule/month",
     "/schedule/week",
+    "/settings",
   ];
 
   // if user is not signed in and the current path is not / or /signin or /signup redirect the user to /

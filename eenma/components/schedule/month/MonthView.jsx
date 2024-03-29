@@ -10,7 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import DayView from "./DayView";
+import DayView from "../day/DayView";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -21,9 +21,6 @@ export default function MonthView({ days }) {
     <div className="h-[670px] rounded-lg shadow ring-2 ring-black dark:ring-slate-500 ring-opacity-5 lg:flex lg:flex-auto lg:flex-col ">
       <div className="grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-center text-xs font-semibold leading-6 text-gray-700 dark:text-white lg:flex-none rounded-tr-lg rounded-tl-lg">
         <div className="bg-background py-2 rounded-tl-lg">
-          S<span className="sr-only sm:not-sr-only">un</span>
-        </div>
-        <div className="bg-background py-2">
           M<span className="sr-only sm:not-sr-only">on</span>
         </div>
         <div className="bg-background py-2">
@@ -38,8 +35,11 @@ export default function MonthView({ days }) {
         <div className="bg-background py-2">
           F<span className="sr-only sm:not-sr-only">ri</span>
         </div>
-        <div className="bg-background py-2 rounded-tr-lg">
+        <div className="bg-background py-2 ">
           S<span className="sr-only sm:not-sr-only">at</span>
+        </div>
+        <div className="bg-background py-2 rounded-tr-lg">
+          S<span className="sr-only sm:not-sr-only">un</span>
         </div>
       </div>
       <div className="flex bg-gray-200 text-xs leading-5 text-gray-700 dark:text-white lg:flex-auto rounded-lg">

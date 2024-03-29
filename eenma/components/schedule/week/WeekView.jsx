@@ -1,6 +1,9 @@
-import React, { useEffect, useRef } from "react";
+"use client";
 
-export default function WeekView() {
+import React, { useEffect, useRef } from "react";
+import WeekHeader from "./WeekHeader";
+
+export default function WeekView({ days }) {
   const container = useRef(null);
   const containerNav = useRef(null);
   const containerOffset = useRef(null);
@@ -28,121 +31,11 @@ export default function WeekView() {
           ref={containerNav}
           className="sticky top-0 z-30 flex-none bg-background shadow ring-1 dark:ring-gray-600 ring-black ring-opacity-5 sm:pr-8"
         >
-          <div className="grid grid-cols-7 text-xs leading-6 text-gray-500 sm:hidden">
-            <button
-              type="button"
-              className="flex flex-col items-center pb-3 pt-2"
-            >
-              T{" "}
-              <span className="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">
-                11
-              </span>
-            </button>
-            <button
-              type="button"
-              className="flex flex-col items-center pb-3 pt-2"
-            >
-              W{" "}
-              <span className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-green font-semibold text-black dark:text-black">
-                12
-              </span>
-            </button>
-            <button
-              type="button"
-              className="flex flex-col items-center pb-3 pt-2"
-            >
-              T{" "}
-              <span className="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">
-                13
-              </span>
-            </button>
-            <button
-              type="button"
-              className="flex flex-col items-center pb-3 pt-2"
-            >
-              F{" "}
-              <span className="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">
-                14
-              </span>
-            </button>
-            <button
-              type="button"
-              className="flex flex-col items-center pb-3 pt-2"
-            >
-              S{" "}
-              <span className="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">
-                15
-              </span>
-            </button>
-            <button
-              type="button"
-              className="flex flex-col items-center pb-3 pt-2"
-            >
-              S{" "}
-              <span className="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">
-                16
-              </span>
-            </button>
-          </div>
-
           <div className="-mr-px hidden grid-cols-7 divide-x dark:divide-slate-500 dark:border-slate-500 divide-gray-100 border-r border-gray-100 text-xs leading-6 text-gray-500 dark:text-white sm:grid">
             <div className="col-end-1 w-14" />
-            <div className="flex items-center justify-center py-1">
-              <span>
-                Mon{" "}
-                <span className="items-center justify-center font-semibold text-gray-900 dark:text-white">
-                  10
-                </span>
-              </span>
-            </div>
-            <div className="flex items-center justify-center py-1">
-              <span>
-                Tue{" "}
-                <span className="items-center justify-center font-semibold text-gray-900 dark:text-white">
-                  11
-                </span>
-              </span>
-            </div>
-            <div className="flex items-center justify-center py-1">
-              <span className="flex items-baseline">
-                Wed{" "}
-                <span className="ml-1.5 flex h-8 w-8 items-center justify-center rounded-full bg-green font-semibold text-black dark:text-white">
-                  12
-                </span>
-              </span>
-            </div>
-            <div className="flex items-center justify-center py-1">
-              <span>
-                Thu{" "}
-                <span className="items-center justify-center font-semibold text-gray-900 dark:text-white">
-                  13
-                </span>
-              </span>
-            </div>
-            <div className="flex items-center justify-center py-1">
-              <span>
-                Fri{" "}
-                <span className="items-center justify-center font-semibold text-gray-900 dark:text-white">
-                  14
-                </span>
-              </span>
-            </div>
-            <div className="flex items-center justify-center py-1">
-              <span>
-                Sat{" "}
-                <span className="items-center justify-center font-semibold text-gray-900 dark:text-white">
-                  15
-                </span>
-              </span>
-            </div>
-            <div className="flex items-center justify-center py-1">
-              <span>
-                Sun{" "}
-                <span className="items-center justify-center font-semibold text-gray-900 dark:text-white">
-                  16
-                </span>
-              </span>
-            </div>
+            {days.map((day) => (
+              <WeekHeader key={day.date} day={day} />
+            ))}
           </div>
         </div>
         <div className="flex flex-auto">
