@@ -11,14 +11,16 @@ import {
   sub,
 } from "date-fns";
 
-export default function useDaysWeek({ initialMonth }) {
+export default function useDaysWeek({ currentMonth }) {
   let daysWeekObj = [];
   let returnDaysWeek = [];
+  let groupWeek = [];
   let connectDaysFromPrevMonth = [];
   let connectDaysFromNextMonth = [];
+  let daysInMonth = [];
 
   // generate current date
-  const currentDate = initialMonth;
+  const currentDate = currentMonth;
 
   // generate previous and next month from today
   const previousMonth = sub(currentDate, { months: 1 });
@@ -28,12 +30,6 @@ export default function useDaysWeek({ initialMonth }) {
   const firstDayOfCurrentMonth = startOfMonth(currentDate);
   const lastDayOfCurrentMonth = endOfMonth(currentDate);
 
-  // generate days in current month
-  const daysInMonth = eachDayOfInterval({
-    start: firstDayOfCurrentMonth,
-    end: lastDayOfCurrentMonth,
-  });
-
   // generate start and end day index of first day of current month, 0 = sun
   const startDayIndex = getDay(firstDayOfCurrentMonth);
   const lastDayIndex = getDay(lastDayOfCurrentMonth);
@@ -41,43 +37,56 @@ export default function useDaysWeek({ initialMonth }) {
   // generate last day of previous month
   const lastDayOfPrevMonth = endOfMonth(previousMonth);
 
-  // generate first day of next month
+  // generate first day of next month and index
   const firstDayOfNextMonth = startOfMonth(nextMonth);
+  const firstDayOfNextMonthIndex = getDay(firstDayOfNextMonth);
 
   // if first day is not monday
   if (startDayIndex != 1) {
-    if (startDayIndex == 0) {
-      connectDaysFromPrevMonth = eachDayOfInterval({
-        start: sub(lastDayOfPrevMonth, { days: 5 }),
-        end: lastDayOfPrevMonth,
+    const firstMonday = setDay(firstDayOfCurrentMonth, 1, {
+      weekStartsOn: getDay(firstDayOfCurrentMonth),
+    });
+
+    // generate days in current month
+    daysInMonth = eachDayOfInterval({
+      start: firstMonday,
+      end: lastDayOfCurrentMonth,
+    });
+  } else {
+    // generate days in current month
+    daysInMonth = eachDayOfInterval({
+      start: firstDayOfCurrentMonth,
+      end: lastDayOfCurrentMonth,
+    });
+  }
+
+  if (lastDayIndex != 0) {
+    if (firstDayOfNextMonthIndex == 1) {
+      connectDaysFromNextMonth = eachDayOfInterval({
+        start: firstDayOfNextMonth,
+        end: add(firstDayOfNextMonth, {
+          days: 1,
+        }),
       });
     } else {
-      // generate connecting days from previous and next month
-      connectDaysFromPrevMonth = eachDayOfInterval({
-        start: sub(lastDayOfPrevMonth, { days: startDayIndex - 2 }),
-        end: lastDayOfPrevMonth,
+      connectDaysFromNextMonth = eachDayOfInterval({
+        start: firstDayOfNextMonth,
+        end: add(firstDayOfNextMonth, {
+          days: 7 - firstDayOfNextMonthIndex,
+        }),
       });
     }
   }
 
-  connectDaysFromNextMonth = eachDayOfInterval({
-    start: firstDayOfNextMonth,
-    end: add(firstDayOfNextMonth, {
-      days: 41 - connectDaysFromPrevMonth.concat(daysInMonth).length,
-    }),
-  });
-
   // adding all days together, prev + current + next
-  const days = connectDaysFromPrevMonth
-    .concat(daysInMonth)
-    .concat(connectDaysFromNextMonth);
+  const days = daysInMonth.concat(connectDaysFromNextMonth);
 
   for (let day of days) {
     daysWeekObj.push({
       date: format(day, "yyyy-MM-dd"),
       isCurrentMonth: isSameMonth(day, currentDate),
       isSelected: false,
-      isToday: format(day, "yyyy-MM-dd") == format(currentDate, "yyyy-MM-dd"),
+      isToday: format(day, "yyyy-MM-dd") == format(new Date(), "yyyy-MM-dd"),
       events:
         format(day, "yyyy-MM-dd") == format(currentDate, "yyyy-MM-dd")
           ? [
@@ -93,9 +102,18 @@ export default function useDaysWeek({ initialMonth }) {
     });
   }
 
+  let currentWeekIndex = Math.floor(
+    daysWeekObj.findIndex((item) => item.isToday === true) / 7
+  );
+
   while (daysWeekObj.length > 0) {
-    returnDaysWeek.push(daysWeekObj.splice(0, 7));
+    groupWeek.push(daysWeekObj.splice(0, 7));
   }
+
+  returnDaysWeek = {
+    days: [...groupWeek],
+    currentWeekIndex: currentWeekIndex,
+  };
 
   return returnDaysWeek;
 }

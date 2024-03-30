@@ -9,16 +9,8 @@ function classNames(...classes) {
 }
 
 export default function WeekHeader({ day }) {
-  console.log(day);
   return (
-    <div
-      className={classNames(
-        day.isCurrentMonth
-          ? "bg-background"
-          : "bg-gray-50 text-gray-500 dark:bg-gray-800 dark:text-gray-400",
-        "flex items-center justify-center h-[45px]"
-      )}
-    >
+    <div className="flex items-center justify-center h-[45px] background">
       <span className={day.isToday ? "flex items-baseline" : ""}>
         {format(day.date, "ccc")}{" "}
         <span

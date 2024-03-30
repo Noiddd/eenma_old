@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 
-import { format, add, sub } from "date-fns";
+import { format, add, sub, getWeek, getWeekOfMonth } from "date-fns";
 
 import { ChevronLeftIcon, ChevronRightIcon, Clock } from "lucide-react";
 
@@ -11,68 +11,95 @@ import useDays from "@/hooks/useDays";
 import Link from "next/link";
 import MonthView from "./month/MonthView";
 import WeekView from "./week/WeekView";
-import { usePathname } from "next/navigation";
 import useDaysWeek from "@/hooks/useDaysWeek";
+import { useAtom } from "jotai";
+import {
+  currentMonthAtom,
+  currentWeekAtom,
+  weekNumberAtom,
+} from "@/jotai/scheduleJotai";
 
 export default function ScheduleCalender({ view }) {
-  const [initialMonth, setInitialMonth] = useState(new Date());
+  const [currentMonth, setCurrentMonth] = useAtom(currentMonthAtom);
+  const [currentWeek, setCurrentWeek] = useAtom(currentWeekAtom);
+  const [weekNumber, setWeekNumber] = useAtom(weekNumberAtom);
 
-  const days = useMemo(() => useDays({ initialMonth }), [initialMonth]);
-  const daysWeek = useMemo(() => useDaysWeek({ initialMonth }), [initialMonth]);
+  const days = useMemo(() => useDays({ currentMonth }), [currentMonth]);
+  const daysWeek = useMemo(() => useDaysWeek({ currentMonth }), [currentMonth]);
 
   useEffect(() => {
-    setInitialWeek(daysWeek[0]);
-  }, [initialMonth]);
+    setCurrentWeek(daysWeek.days[0]);
+  }, []);
 
-  const [initialWeek, setInitialWeek] = useState(daysWeek[0]);
-  const [weekNumber, setWeekNumber] = useState(0);
+  useEffect(() => {
+    if (weekNumber == -1) {
+      console.log("prev month");
 
-  let pathname = usePathname();
+      // when previous month is clicked
+      setCurrentWeek(daysWeek.days[daysWeek.days.length - 1]);
+
+      setWeekNumber(daysWeek.days.length - 1);
+    } else if (weekNumber == -2) {
+      console.log("in today click");
+      // when today is clicked
+
+      console.log(getWeekOfMonth(new Date(2024, 4, 7)) - 2);
+
+      setCurrentWeek(daysWeek.days[daysWeek.currentWeekIndex]);
+      setWeekNumber(daysWeek.currentWeekIndex);
+    } else {
+      console.log("jump month");
+      // when next month is clicked
+      setCurrentWeek(daysWeek.days[0]);
+
+      setWeekNumber(0);
+    }
+  }, [currentMonth]);
 
   const handleNext = () => {
     if (view == "month") {
-      setInitialMonth((prev) => add(prev, { months: 1 }));
+      setCurrentMonth((prev) => add(prev, { months: 1 }));
     }
 
     if (view == "week") {
-      if (weekNumber == daysWeek.length - 1) {
+      if (weekNumber == daysWeek.days.length - 1) {
         console.log("next month");
-        setInitialMonth((prev) => add(prev, { months: 1 }));
+        setCurrentMonth((prev) => add(prev, { months: 1 }));
 
-        // setInitialWeek(daysWeek[0]);
-
-        setWeekNumber(0);
         return;
       }
 
       setWeekNumber((prev) => prev + 1);
 
-      setInitialWeek(daysWeek[weekNumber + 1]);
+      setCurrentWeek(daysWeek.days[weekNumber + 1]);
     }
   };
   const handlePrev = () => {
     if (view == "month") {
-      setInitialMonth((prev) => sub(prev, { months: 1 }));
+      setCurrentMonth((prev) => sub(prev, { months: 1 }));
     }
 
     if (view == "week") {
       if (weekNumber == 0) {
         console.log("previous month");
-        setInitialMonth((prev) => sub(prev, { months: 1 }));
+        setCurrentMonth((prev) => sub(prev, { months: 1 }));
 
-        setInitialWeek(daysWeek[daysWeek.length - 1]);
+        setWeekNumber(-1);
 
         return;
       }
 
       setWeekNumber((prev) => prev - 1);
 
-      setInitialWeek(daysWeek[weekNumber]);
+      setCurrentWeek(daysWeek.days[weekNumber - 1]);
     }
   };
 
   const handleToday = () => {
-    setInitialMonth(new Date());
+    console.log("in handle today function");
+    setCurrentMonth(new Date());
+
+    setWeekNumber(-2);
   };
 
   const selectedDay = days.find((day) => day.isSelected);
@@ -81,7 +108,7 @@ export default function ScheduleCalender({ view }) {
     <div className="lg:flex lg:flex-col relative top-[50%] translate-y-[-52%]">
       <header className="flex items-center justify-between px-6 py-4 lg:flex-none">
         <h1 className="w-40 text-lg font-semibold leading-6 text-gray-900 dark:text-white">
-          <time dateTime="2022-01">{format(initialMonth, "MMMM yyyy")}</time>
+          <time dateTime="2022-01">{format(currentMonth, "MMMM yyyy")}</time>
         </h1>
         <div className="flex gap-8 text-xs font-medium">
           <Link
@@ -127,8 +154,8 @@ export default function ScheduleCalender({ view }) {
           </Button>
         </div>
       </header>
-      {pathname == "/schedule/month" && <MonthView days={days} />}
-      {pathname == "/schedule/week" && <WeekView days={initialWeek} />}
+      {view == "month" && <MonthView days={days} />}
+      {view == "week" && <WeekView days={currentWeek} />}
 
       {selectedDay?.events.length > 0 && (
         <div className="px-4 py-10 sm:px-6 lg:hidden ">

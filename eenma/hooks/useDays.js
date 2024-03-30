@@ -10,13 +10,13 @@ import {
   sub,
 } from "date-fns";
 
-export default function useDays({ initialMonth }) {
+export default function useDays({ currentMonth }) {
   let returnDays = [];
   let connectDaysFromPrevMonth = [];
   let connectDaysFromNextMonth = [];
 
   // generate current date
-  const currentDate = initialMonth;
+  const currentDate = currentMonth;
 
   // generate previous and next month from today
   const previousMonth = sub(currentDate, { months: 1 });
@@ -90,9 +90,6 @@ export default function useDays({ initialMonth }) {
           : [],
     });
   }
-
-  console.log("RETURN DAYS");
-  console.log(returnDays);
 
   return returnDays;
 }
