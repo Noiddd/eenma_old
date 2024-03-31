@@ -46,7 +46,7 @@ export default function ScheduleCalender({ view }) {
       console.log(getWeekOfMonth(new Date(2024, 4, 7)) - 2);
 
       setCurrentWeek(daysWeek.days[daysWeek.currentWeekIndex]);
-      setWeekNumber(daysWeek.currentWeekIndex);
+      setWeekNumber(getWeekOfMonth(new Date()) - 2);
     } else {
       console.log("jump month");
       // when next month is clicked
@@ -115,7 +115,7 @@ export default function ScheduleCalender({ view }) {
             href={"/schedule/week"}
             className={`${
               view == "week" && "bg-secondary"
-            } cursor-default h-8 rounded-md text-xs px-3 hover:bg-secondary text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50`}
+            } cursor-default h-8 rounded-md text-xs px-3 dark:hover:bg-[#3F4448] hover:bg-gray-200 text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50`}
           >
             Week
           </Link>
@@ -124,7 +124,7 @@ export default function ScheduleCalender({ view }) {
             href={"/schedule/month"}
             className={`${
               view == "month" && "bg-secondary"
-            } cursor-default h-8 rounded-md text-xs px-3 hover:bg-secondary text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50`}
+            } cursor-default h-8 rounded-md text-xs px-3 dark:hover:bg-[#3F4448] hover:bg-gray-200 text-secondary-foreground inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50`}
           >
             Month
           </Link>

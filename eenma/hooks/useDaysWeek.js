@@ -5,7 +5,6 @@ import {
   format,
   getDay,
   isSameMonth,
-  isThisMonth,
   setDay,
   startOfMonth,
   sub,

@@ -14,8 +14,6 @@ export default function useUser() {
       if (user.data?.user) {
         // fetch user info
 
-        console.log(user.data.user.id);
-
         const { data } = await supabase
           .from("profiles")
           .select("*")
