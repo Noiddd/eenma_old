@@ -1,29 +1,20 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Button } from "../ui/button";
-import SupabaseBrowser from "@/lib/supabase/SupabaseBrowser";
-import { facebookLogin } from "@/lib/facebook/FacebookSDK";
+
+import Link from "next/link";
 
 export default function SettingsPage() {
-  // const supabase = SupabaseBrowser();
-
-  const handleClick = async () => {
-    // const { data, error } = await supabase.auth.signInWithOAuth({
-    //   provider: "facebook",
-    // });
-
-    // console.log("facebook data");
-    // console.log(data.url);
-
-    console.log("reached log in button");
-    facebookLogin();
-  };
-
-  // {provider: 'facebook', url: 'https://lxxifqhaibasuphpyffn.supabase.co/auth/v1/a…lTvIEZWKxyPWsWZrZ-N7Rw&code_challenge_method=s256'}
   return (
     <div>
-      <Button onClick={handleClick}>Facebook</Button>
+      <Link
+        href={
+          "http://www.facebook.com/v19.0/dialog/oauth?client_id=841525861117472&display=page&extras={'setup':{'channel':'IG_API_ONBOARDING'}}&redirect_uri=https://localhost:3000/analytics/&response_type=token&scope=instagram_basic,instagram_content_publish,instagram_manage_comments,instagram_manage_insights,pages_show_list,pages_read_engagement"
+        }
+      >
+        <Button>Login</Button>
+      </Link>
     </div>
   );
 }

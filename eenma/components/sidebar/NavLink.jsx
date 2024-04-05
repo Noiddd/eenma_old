@@ -55,7 +55,7 @@ export default function NavLink({ href, value, ...props }) {
         )}
       </Link>
       <div
-        className={`transition delay-500 duration-200 ease-in-out peer-hover:opacity-100 dark:peer-hover:opacity-100 opacity-0 absolute left-7 z-50 rounded-md border bg-popover px-3 py-2 text-popover-foreground shadow-md outline-none`}
+        className={`transition delay-500 duration-200 ease-in-out peer-hover:opacity-100 dark:peer-hover:opacity-100 opacity-0 absolute left-7 z-50 rounded-md border-popover border bg-popover px-3 py-2 text-popover-foreground shadow-md outline-none`}
       >
         {value}
       </div>

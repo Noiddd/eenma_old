@@ -31,8 +31,6 @@ export default function RootLayout({ children }) {
           </ReactQueryProvider>
         </body>
       </html>
-
-      <Script src="https://connect.facebook.net/en_US/sdk.js" />
     </>
   );
 }
