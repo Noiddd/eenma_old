@@ -19,21 +19,20 @@ export default function SignUpForm({ className, ...props }) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const onSubmit = async (event) => {
+  const onSignUp = async (event) => {
     event.preventDefault();
     setIsLoading(true);
 
-    if (email == "" || password == "") {
+    if (email == "") {
       setIsLoading(false);
       return;
     }
 
-    const { data, error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signInWithOtp({
       email,
-      password,
       options: {
+        shouldCreateUser: true,
         emailRedirectTo: location.origin + "/auth/callback?next=/analytics",
       },
     });
@@ -54,7 +53,7 @@ export default function SignUpForm({ className, ...props }) {
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSignUp}>
         <div className="grid gap-2">
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
@@ -70,16 +69,6 @@ export default function SignUpForm({ className, ...props }) {
               disabled={isLoading}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-            />
-            <Input
-              id="password"
-              placeholder="Password"
-              type="password"
-              autoCapitalize="none"
-              autoCorrect="off"
-              disabled={isLoading}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <Button disabled={isLoading}>

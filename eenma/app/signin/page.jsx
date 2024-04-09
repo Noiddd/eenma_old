@@ -1,11 +1,17 @@
-"use client";
-
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import SignInForm from "@/components/signin/SignInForm";
+import useUserSession from "@/hooks/useUserSession";
+import { redirect } from "next/navigation";
 
-export default function SignIn() {
+export default async function SignIn() {
+  const { data } = await useUserSession();
+
+  if (data.user) {
+    return redirect("/analytics");
+  }
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">

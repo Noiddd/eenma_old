@@ -12,10 +12,11 @@ import { useRouter } from "next/navigation";
 import SupabaseBrowser from "@/lib/supabase/SupabaseBrowser";
 
 export default function SignInForm({ className, ...props }) {
+  const supabase = SupabaseBrowser();
+
   const router = useRouter();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,8 +24,6 @@ export default function SignInForm({ className, ...props }) {
     console.log(location.origin);
     //event.preventDefault();
     setIsLoading(true);
-
-    const supabase = SupabaseBrowser();
 
     if (provider == "google") {
       supabase.auth.signInWithOAuth({
@@ -38,18 +37,21 @@ export default function SignInForm({ className, ...props }) {
     }
 
     if (provider == "email") {
-      if (email == "" || password == "") {
+      if (email == "") {
         setIsLoading(false);
         return;
       }
 
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithOtp({
         email,
-        password,
         options: {
-          redirectTo: location.origin + "/auth/callback?next=/analytics",
+          shouldCreateUser: true,
+          emailRedirectTo: location.origin + "/auth/callback?next=/analytics",
         },
       });
+
+      console.log(data);
+      console.log(error);
 
       setIsLoading(false);
     }
@@ -73,16 +75,6 @@ export default function SignInForm({ className, ...props }) {
               disabled={isLoading}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-            />
-            <Input
-              id="password"
-              placeholder="Password"
-              type="password"
-              autoCapitalize="none"
-              autoCorrect="off"
-              disabled={isLoading}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <Button disabled={isLoading}>
