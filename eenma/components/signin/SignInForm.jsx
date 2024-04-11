@@ -26,12 +26,29 @@ export default function SignInForm({ className, ...props }) {
     setIsLoading(true);
 
     if (provider == "google") {
-      supabase.auth.signInWithOAuth({
+      const { data, error } = supabase.auth.signInWithOAuth({
         provider,
         options: {
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+            scope: [
+              "openid",
+              "https://www.googleapis.com/auth/userinfo.email",
+              "https://www.googleapis.com/auth/userinfo.profile",
+              "https://www.googleapis.com/auth/yt-analytics.readonly",
+              "https://www.googleapis.com/auth/youtube",
+              "https://www.googleapis.com/auth/youtube.readonly",
+              "https://www.googleapis.com/auth/youtubepartner",
+              "https://www.googleapis.com/auth/yt-analytics-monetary.readonly",
+            ].join(" "),
+          },
           redirectTo: location.origin + "/auth/callback?next=/analytics",
         },
       });
+
+      console.log("login data");
+      console.log(data);
 
       setIsLoading(false);
     }

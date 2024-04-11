@@ -8,7 +8,7 @@ export async function updateSession(request) {
     },
   });
 
-  console.log("IN MIDDLE WARE");
+  console.log("this is the request");
   console.log(request);
 
   const supabase = createServerClient(
@@ -57,6 +57,7 @@ export async function updateSession(request) {
     }
   );
 
+  // refresh the auth token
   await supabase.auth.getUser();
 
   return response;
